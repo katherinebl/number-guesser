@@ -8,7 +8,7 @@
 - Let player choose to play again */
 
 // Game values
-let min = 4,
+let min = 1,
     max = 10,
     winningNum = 2,
     guessesLeft = 3;
@@ -36,28 +36,20 @@ submit.addEventListener('click', function () {
 
     //Check if won
     if (guess === winningNum) {
-        // //Disable input
-        // input.disabled = true;
-        // //Change border color
-        // input.style.borderColor = 'green';
-        // //Set win message
-        // setMessage(`${winningNum} is correct, you win... Yay! :)`, "green");
-
+        //WON Game over
         gameOver(true, `${winningNum} is correct, you win... Yay! :)`);
 
     } else {
-        // //Change border color
-        // input.style.borderColor = 'red';
-        // //Set lose message
-        // setMessage(`Sorry, ${guess} is not correct, you have ${guessesLeft - 1} guesses left!`, "red");
+        //Wrong number 
         guessesLeft--;
-        gameOver(false, `Sorry, ${guess} is not correct, you have ${guessesLeft} guesses left!`);
+        setMessage(`Sorry, ${guess} is not correct, you have ${guessesLeft} guesses left!`, "red");
+        //Game over
+        if (guessesLeft === 0) {
+            gameOver(false, `You lose, the corect number was ${winningNum}`);
+        }
     }
 
-    if (guessesLeft === 0) {
-        input.disabled = true;
-        message.textContent = `Game over :( the correct number was ${winningNum}`;
-    }
+
 });
 
 //Game over 
@@ -71,7 +63,15 @@ function gameOver(won, msg) {
     input.style.borderColor = color;
     //Set win message
     setMessage(msg, color);
+
+    //Play again?
+    submit.value = "Play again!";
+    submit.className += "play-again";
+    submit.addEventListener('click', reloadPage);
+
 }
+
+
 
 //Set message 
 function setMessage(msg, color) {
@@ -79,3 +79,7 @@ function setMessage(msg, color) {
     message.style.color = color;
 }
 
+//Reload Page
+function reloadPage() {
+    document.location.reload(true);
+}
