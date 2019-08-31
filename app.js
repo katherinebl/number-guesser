@@ -31,19 +31,35 @@ submit.addEventListener('click', function () {
 
     //Validate
     if (isNaN(guess) || guess < min || guess > max) {
-        setMessage(`Please, enter a number between ${min} and ${max}`);
+        setMessage(`Please, enter a number between ${min} and ${max}`, 'red');
+    }
 
+    //Check if won
+    if (guess === winningNum) {
+        //Disable input
+        input.disabled = true;
+        //Change border color
+        input.style.borderColor = 'green';
+        //Set win message
+        setMessage(`${winningNum} is correct, you win... Yay! :)`, "green");
 
-    } else if (guess === winningNum) {
-        message.textContent = "Yay! you win :)";
     } else {
-        message.textContent = `Sorry, try again you have ${guessesLeft} guesses left`;
+        //Change border color
+        input.style.borderColor = 'red';
+        //Set lose message
+        setMessage(`Sorry, try again you have ${guessesLeft - 1} guesses left`, "red");
         guessesLeft--;
+    }
+
+    if (guessesLeft === 0) {
+        input.disabled = true;
+        message.textContent = "Game over :(";
     }
 });
 
 //Set message 
-function setMessage(msg) {
+function setMessage(msg, color) {
     message.textContent = msg;
+    message.style.color = color;
 }
 
